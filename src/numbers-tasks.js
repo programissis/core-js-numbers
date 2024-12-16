@@ -225,8 +225,12 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 2  => 1700
  *   1678, 3  => 2000
  */
-function roundToPowerOfTen(/* num, pow */) {
-  throw new Error('Not implemented');
+function roundToPowerOfTen(num, pow) {
+  if (typeof num !== 'number' || typeof pow !== 'number') {
+    throw new Error('Both parameters must be numbers');
+  }
+  const factor = 10 ** pow;
+  return Math.round(num / factor) * factor;
 }
 
 /**
@@ -246,8 +250,17 @@ function roundToPowerOfTen(/* num, pow */) {
  *   16 => false
  *   17 => true
  */
-function isPrime(/* n */) {
-  throw new Error('Not implemented');
+function isPrime(n) {
+  if (typeof n !== 'number' || n < 2) {
+    return false;
+  }
+  for (let i = 2; i <= Math.sqrt(n); i += 1) {
+    // Используем i += 1 вместо i++
+    if (n % i === 0) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
@@ -265,8 +278,12 @@ function isPrime(/* n */) {
  *   toNumber(42, 0) => 42
  *   toNumber(new Number(42), 0) => 42
  */
-function toNumber(/* value, def */) {
-  throw new Error('Not implemented');
+function toNumber(value, def) {
+  const num = Number(value);
+  if (Number.isNaN(num)) {
+    return def;
+  }
+  return num;
 }
 
 /**
@@ -280,8 +297,11 @@ function toNumber(/* value, def */) {
  *   -2 => -8
  *   0  => 0
  */
-function getCube(/* num */) {
-  throw new Error('Not implemented');
+function getCube(num) {
+  if (typeof num !== 'number') {
+    throw new Error('Parameter must be a number');
+  }
+  return num ** 3;
 }
 
 /**
@@ -297,8 +317,26 @@ function getCube(/* num */) {
  *   3  => 2
  *   10 => 55
  */
-function getFibonacciNumber(/* index */) {
-  throw new Error('Not implemented');
+function getFibonacciNumber(index) {
+  if (typeof index !== 'number' || index < 0) {
+    throw new Error('Index must be a non-negative number');
+  }
+
+  let a = 0;
+  let b = 1;
+  let temp;
+
+  if (index === 0) return a;
+  if (index === 1) return b;
+
+  for (let i = 2; i <= index; i += 1) {
+    // Используем i += 1 вместо i++
+    temp = a + b;
+    a = b;
+    b = temp;
+  }
+
+  return b;
 }
 
 /**
@@ -312,8 +350,11 @@ function getFibonacciNumber(/* index */) {
  *   10 => 55 // (1+2+3+...+10)
  *   1  => 1
  */
-function getSumToN(/* n */) {
-  throw new Error('Not implemented');
+function getSumToN(n) {
+  if (typeof n !== 'number' || n < 1) {
+    throw new Error('Parameter must be a positive number');
+  }
+  return (n * (n + 1)) / 2;
 }
 
 /**
@@ -327,8 +368,15 @@ function getSumToN(/* n */) {
  *   202 => 4  // (2+0+2)
  *   5   => 5  // 5
  */
-function getSumOfDigits(/* num */) {
-  throw new Error('Not implemented');
+function getSumOfDigits(num) {
+  if (typeof num !== 'number' || num < 0) {
+    throw new Error('Parameter must be a non-negative number');
+  }
+
+  return num
+    .toString()
+    .split('')
+    .reduce((sum, digit) => sum + Number(digit), 0);
 }
 
 /**
@@ -342,8 +390,18 @@ function getSumOfDigits(/* num */) {
  *   16  => true
  *   15  => false
  */
-function isPowerOfTwo(/* num */) {
-  throw new Error('Not implemented');
+function isPowerOfTwo(num) {
+  if (typeof num !== 'number' || num < 1) {
+    return false;
+  }
+  let n = num; // Используем локальную переменную n вместо изменения параметра num
+  while (n !== 1) {
+    if (n % 2 !== 0) {
+      return false;
+    }
+    n /= 2; // Используем оператор присваивания /=
+  }
+  return true;
 }
 
 /**
@@ -356,8 +414,11 @@ function isPowerOfTwo(/* num */) {
  *   0 => 0
  *   Math.PI / 2 => 1
  */
-function getSine(/* num */) {
-  throw new Error('Not implemented');
+function getSine(num) {
+  if (typeof num !== 'number') {
+    throw new Error('Parameter must be a number');
+  }
+  return Math.sin(num);
 }
 
 /**
@@ -371,8 +432,14 @@ function getSine(/* num */) {
  * 255, 16 => 'ff'
  * 2, 2    => '10'
  */
-function numberToStringInBase(/* number, base */) {
-  throw new Error('Not implemented');
+function numberToStringInBase(number, base) {
+  if (typeof number !== 'number' || typeof base !== 'number') {
+    throw new Error('Both parameters must be numbers');
+  }
+  if (base < 2 || base > 36) {
+    throw new Error('Base must be in the range 2-36');
+  }
+  return number.toString(base);
 }
 
 /**
@@ -385,8 +452,14 @@ function numberToStringInBase(/* number, base */) {
  * @example:
  * 12345, 2    => '1.23e+4'
  */
-function toExponential(/* number, fractionDigits */) {
-  throw new Error('Not implemented');
+function toExponential(number, fractionDigits) {
+  if (typeof number !== 'number' || typeof fractionDigits !== 'number') {
+    throw new Error('Both parameters must be numbers');
+  }
+  if (fractionDigits < 0 || fractionDigits > 20) {
+    throw new Error('fractionDigits must be in the range 0-20');
+  }
+  return number.toExponential(fractionDigits);
 }
 
 /**
@@ -400,8 +473,14 @@ function toExponential(/* number, fractionDigits */) {
  * 12345, 2    => '12345.00'
  * 12.345, 1   => '12.3'
  */
-function toFixed(/* number, fractionDigits */) {
-  throw new Error('Not implemented');
+function toFixed(number, fractionDigits) {
+  if (typeof number !== 'number' || typeof fractionDigits !== 'number') {
+    throw new Error('Both parameters must be numbers');
+  }
+  if (fractionDigits < 0 || fractionDigits > 20) {
+    throw new Error('fractionDigits must be in the range 0-20');
+  }
+  return number.toFixed(fractionDigits);
 }
 
 /**
@@ -416,8 +495,14 @@ function toFixed(/* number, fractionDigits */) {
  * 12345, 7    => '12345.00'
  * 12.345, 4   => '12.35'
  */
-function toPrecision(/* number, precision */) {
-  throw new Error('Not implemented');
+function toPrecision(number, precision) {
+  if (typeof number !== 'number' || typeof precision !== 'number') {
+    throw new Error('Both parameters must be numbers');
+  }
+  if (precision < 1 || precision > 21) {
+    throw new Error('Precision must be in the range 1-21');
+  }
+  return number.toPrecision(precision);
 }
 
 /**
@@ -430,8 +515,11 @@ function toPrecision(/* number, precision */) {
  * new Number(5) => 5
  * Number(-5)    => -5
  */
-function getNumberValue(/* number */) {
-  throw new Error('Not implemented');
+function getNumberValue(number) {
+  if (number instanceof Number || typeof number === 'number') {
+    return number.valueOf(); // Используем метод valueOf() для извлечения примитивного значения
+  }
+  throw new Error('Parameter must be a number or a Number object');
 }
 
 /**
@@ -449,8 +537,10 @@ function getNumberValue(/* number */) {
  * 5        => true
  * '5'      => false
  */
-function isNumber(/* number */) {
-  throw new Error('Not implemented');
+function isNumber(value) {
+  return (
+    typeof value === 'number' && Number.isFinite(value) && !Number.isNaN(value)
+  );
 }
 
 /**
@@ -464,8 +554,8 @@ function isNumber(/* number */) {
  * 5.1  => false
  * '5'  => false
  */
-function isInteger(/* number */) {
-  throw new Error('Not implemented');
+function isInteger(number) {
+  return typeof number === 'number' && Number.isInteger(number);
 }
 
 /**
@@ -478,8 +568,12 @@ function isInteger(/* number */) {
  * '4.567abcdefgh' => 4.567
  * 'abcdefgh'      => NaN
  */
-function getFloatOnString(/* str */) {
-  throw new Error('Not implemented');
+function getFloatOnString(str) {
+  if (typeof str !== 'string') {
+    throw new Error('Parameter must be a string');
+  }
+  const result = Number.parseFloat(str);
+  return Number.isNaN(result) ? NaN : result;
 }
 
 /**
